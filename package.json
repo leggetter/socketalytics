@@ -1,0 +1,27 @@
+{
+  "name": "socketalytics",
+  "version": "0.0.0",
+  "description": "Example realtime analytics using Socket.IO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leggetter/socketalytics"
+  },
+  "keywords": [
+    "socket.io",
+    "analytics"
+  ],
+  "author": "Phil Leggetter <phil@leggetter.co.uk> (http://www.leggetter.co.uk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leggetter/socketalytics/issues"
+  },
+  "homepage": "https://github.com/leggetter/socketalytics",
+  "dependencies": {
+    "socket.io": "~1.0.4",
+    "express": "~4.4.3"
+  }
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SocketAlytics</title>
+  </head>
+  <body>
+    <h1>SocketAlytics</h1>
+
+    <button id="btn">Click Me!</button>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js"></script>
+
+    <script src="https://cdn.socket.io/socket.io-1.0.4.js"></script>
+    <!--script src="/socket.io/socket.io.js"></script-->
+    <script>
+      localStorage.debug = 'socket.io-client:socket';
+
+      var socket = io();
+      socket.on('connect', function(){
+        console.log( 'connected' );
+        var data = {
+          page: {
+            url: window.location.href
+          },
+          device: {
+            res: {
+              width: window.screen.width,
+              height: window.screen.height
+            },
+            capabilities: {
+              webgl: Modernizr.webgl,
+              touch: Modernizr.touch,
+              video: Modernizr.video
+            }
+          }
+        };
+
+        console.log( 'emitting data', data );
+        socket.emit( 'client-data', data );
+
+        socket.on('disconnect', function(){});
+      });
+
+      document.getElementById( 'btn' ).addEventListener( 'click', function() {
+        socket.emit('hello', 'world');
+      });
+
+      document.addEventListener( 'mousemove', function( e ) {
+        var data = {
+          mouseX: e.x,
+          mouseY: e.y
+        };
+
+        socket.emit( 'mousemove', data );
+
+      } );
+    </script>
+  </body>
+</html>
