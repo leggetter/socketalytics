@@ -1,0 +1,29 @@
+{
+  "name": "socketalytics",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/leggetter/socketalytics",
+  "authors": [
+    "leggetter <phil@leggetter.co.uk>"
+  ],
+  "keywords": [
+    "analytics",
+    "socket.io"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "jquery-flot": "~0.8.3",
+    "jquery-knob": "~1.2.8",
+    "bootstrap": "~3.1.1"
+  }
+}

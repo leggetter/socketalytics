@@ -16,6 +16,7 @@
       localStorage.debug = 'socket.io-client:socket';
 
       var socket = io();
+
       socket.on('connect', function(){
         console.log( 'connected' );
         var data = {
@@ -30,7 +31,8 @@
             capabilities: {
               webgl: Modernizr.webgl,
               touch: Modernizr.touch,
-              video: Modernizr.video
+              video: Modernizr.video,
+              websocket: Modernizr.websockets
             }
           }
         };

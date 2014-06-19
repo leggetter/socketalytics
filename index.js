@@ -15,6 +15,9 @@ io.on('connection', function(socket){
     // console.log( msg );
     io.emit('mousemove', msg);
   });
+
+  console.log( 'clients', io.sockets.server.engine.clientsCount );
+  // console.log( io.sockets.manager.server.connections );
 });
 
 http.listen(3000, function(){
