@@ -9,8 +9,6 @@ var globalStats = {
   connections: 0,
   touch: 0,
   video: 0,
-  webgl: 0,
-  websocket: 0,
   pages: {}
 };
 
@@ -28,12 +26,7 @@ capture.on( 'connection', function( socket ) {
     var data = captureSockets[ socket.id ].stats;
     globalStats.touch     -= ( data.touch?     1 : 0 );
     globalStats.video     -= ( data.video?     1 : 0 );
-    globalStats.webgl     -= ( data.webgl?     1 : 0 );
-    globalStats.websocket -= ( data.websocket? 1 : 0 );
     --globalStats.pages[ data.url ];
-    if( !globalStats.pages[ data.url ] ) {
-      delete globalStats.pages[ data.url ];
-    }
     delete captureSockets[ socket.id ];
 
     console.log( globalStats );
@@ -44,8 +37,6 @@ capture.on( 'connection', function( socket ) {
     captureSockets[ socket.id ].stats = data;
     globalStats.touch     += ( data.touch?     1 : 0 );
     globalStats.video     += ( data.video?     1 : 0 );
-    globalStats.webgl     += ( data.webgl?     1 : 0 );
-    globalStats.websocket += ( data.websocket? 1 : 0 );
 
     var pageCount = globalStats.pages[ data.url ] || 0;
     globalStats.pages[ data.url ] = ++pageCount;
@@ -65,15 +56,11 @@ function sendUpdate( emitter ) {
     connections: globalStats.connections,
     touch: 0,
     video: 0,
-    webgl: 0,
-    websocket: 0,
     pages: {}
   };
   if( globalStats.connections ) {
     update.touch = Math.round( globalStats.touch / globalStats.connections );
     update.video = Math.round( globalStats.video / globalStats.connections );
-    update.webgl = Math.round( globalStats.webgl / globalStats.connections );
-    update.websocket = Math.round( globalStats.websocket / globalStats.connections );
     update.pages = globalStats.pages;
   }
 
