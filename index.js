@@ -24,8 +24,8 @@ capture.on( 'connection', function( socket ) {
     --globalStats.connections;
 
     var data = captureSockets[ socket.id ].stats;
-    globalStats.touch     -= ( data.touch?     1 : 0 );
-    globalStats.video     -= ( data.video?     1 : 0 );
+    globalStats.touch -= ( data.touch? 1 : 0 );
+    globalStats.video -= ( data.video? 1 : 0 );
     --globalStats.pages[ data.url ];
     delete captureSockets[ socket.id ];
 
@@ -35,8 +35,8 @@ capture.on( 'connection', function( socket ) {
 
   socket.on( 'client-data', function( data ) {
     captureSockets[ socket.id ].stats = data;
-    globalStats.touch     += ( data.touch?     1 : 0 );
-    globalStats.video     += ( data.video?     1 : 0 );
+    globalStats.touch += ( data.touch? 1 : 0 );
+    globalStats.video += ( data.video? 1 : 0 );
 
     var pageCount = globalStats.pages[ data.url ] || 0;
     globalStats.pages[ data.url ] = ++pageCount;
@@ -54,15 +54,10 @@ dashboard.on( 'connection', function( socket ) {
 function sendUpdate( emitter ) {
   var update = {
     connections: globalStats.connections,
-    touch: 0,
-    video: 0,
-    pages: {}
+    touch: Math.round( globalStats.touch / globalStats.connections ) || 0,
+    video: Math.round( globalStats.video / globalStats.connections ) || 0,
+    pages: globalStats.pages
   };
-  if( globalStats.connections ) {
-    update.touch = Math.round( globalStats.touch / globalStats.connections );
-    update.video = Math.round( globalStats.video / globalStats.connections );
-    update.pages = globalStats.pages;
-  }
 
   console.log( update );
   emitter.emit( 'stats-updated', update );
