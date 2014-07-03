@@ -5,6 +5,7 @@ app.use( express.static( __dirname + '/public') );
 var server = require( 'http' ).Server( app );
 var io = require( 'socket.io' )( server );
 
+// Store data
 var globalStats = {
   connections: 0,
   touch: 0,
@@ -12,8 +13,11 @@ var globalStats = {
   pages: {}
 };
 
+// Map of Socket.id to Socket object
 var captureSockets = {};
-var capture = io.of( '/capture' )
+
+// Namespace use when capturing data
+var capture = io.of( '/capture' );
 
 capture.on( 'connection', function( socket ) {
   captureSockets[ socket.id ] = { socket: socket, stats: {} };
@@ -21,6 +25,7 @@ capture.on( 'connection', function( socket ) {
   ++globalStats.connections;
 
   socket.on( 'disconnect', function() {
+    // Clear down stats for lost sockeet
     --globalStats.connections;
 
     var data = captureSockets[ socket.id ].stats;
@@ -30,7 +35,7 @@ capture.on( 'connection', function( socket ) {
     delete captureSockets[ socket.id ];
 
     console.log( globalStats );
-    sendUpdate( dashboard );
+    dashboard.emit( 'stats-updated', globalStats );
   } );
 
   socket.on( 'client-data', function( data ) {
@@ -42,26 +47,15 @@ capture.on( 'connection', function( socket ) {
     globalStats.pages[ data.url ] = ++pageCount;
 
     console.log( globalStats );
-    sendUpdate( dashboard );
+    dashboard.emit( 'stats-updated', globalStats );
   } );
 } );
 
 var dashboard = io.of( '/dashboard' );
 dashboard.on( 'connection', function( socket ) {
-  sendUpdate( socket );
+  // Send an update to the newly connected dashboard socket
+  socket.emit( 'stats-updated', globalStats );
 } );
-
-function sendUpdate( emitter ) {
-  var update = {
-    connections: globalStats.connections,
-    touch: Math.round( globalStats.touch / globalStats.connections ) || 0,
-    video: Math.round( globalStats.video / globalStats.connections ) || 0,
-    pages: globalStats.pages
-  };
-
-  console.log( update );
-  emitter.emit( 'stats-updated', update );
-}
 
 server.listen( 3000, function(){
   console.log( 'listening on *:3000' );

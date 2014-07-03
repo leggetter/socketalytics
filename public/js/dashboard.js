@@ -13,15 +13,16 @@ $( function() {
   var dashboard = io( 'localhost:3000/dashboard' );
   dashboard.on( 'stats-updated', function( update ) {
 
-    touch.update( update.touch );
-    video.update( update.video );
+    // Convert to percentages
+    touch.update( Math.round( update.touch / update.connections ) || 0 );
+    video.update( Math.round( update.video / update.connections ) || 0 );
 
     var pagesData = [];
     for( var url in update.pages ) {
       pagesData.push( { x: url, y: update.pages[ url ] } );
     }
     console.log( pagesData );
-    pages.update( [ { label: 'Popular Pages', values: pagesData } ] );
+    pages.update( [ { values: pagesData } ] );
 
     visitors.push( [ { time: Date.now()/1000, y: update.connections } ] );
 
