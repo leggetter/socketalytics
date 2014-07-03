@@ -10,12 +10,12 @@ var globalStats = {
   touch: 0,
   video: 0,
   webgl: 0,
-  websocket: 0
+  websocket: 0,
+  pages: {}
 };
 
 var captureSockets = {};
-var capture = io.of( '/capture' );
-var dashboard = io.of( '/dashboard' );
+var capture = io.of( '/capture' )
 
 capture.on( 'connection', function( socket ) {
   captureSockets[ socket.id ] = { socket: socket, stats: {} };
@@ -30,10 +30,14 @@ capture.on( 'connection', function( socket ) {
     globalStats.video     -= ( data.video?     1 : 0 );
     globalStats.webgl     -= ( data.webgl?     1 : 0 );
     globalStats.websocket -= ( data.websocket? 1 : 0 );
+    --globalStats.pages[ data.url ];
+    if( !globalStats.pages[ data.url ] ) {
+      delete globalStats.pages[ data.url ];
+    }
     delete captureSockets[ socket.id ];
 
     console.log( globalStats );
-    sendUpdate();
+    sendUpdate( dashboard );
   } );
 
   socket.on( 'client-data', function( data ) {
@@ -43,24 +47,38 @@ capture.on( 'connection', function( socket ) {
     globalStats.webgl     += ( data.webgl?     1 : 0 );
     globalStats.websocket += ( data.websocket? 1 : 0 );
 
+    var pageCount = globalStats.pages[ data.url ] || 0;
+    globalStats.pages[ data.url ] = ++pageCount;
+
     console.log( globalStats );
-    sendUpdate();
+    sendUpdate( dashboard );
   } );
 } );
 
-function percent( stat ) {
-  return Math.round( stat / globalStats.connections ) * 100;
-}
+var dashboard = io.of( '/dashboard' );
+dashboard.on( 'connection', function( socket ) {
+  sendUpdate( socket );
+} );
 
-function sendUpdate() {
+function sendUpdate( emitter ) {
   var update = {
-    touchPercent: percent( globalStats.touch ),
-    videoPercent: percent( globalStats.video ),
-    webglPercent: percent( globalStats.webgl ),
-    websocketPercent: percent( globalStats.websocket )
+    connections: globalStats.connections,
+    touch: 0,
+    video: 0,
+    webgl: 0,
+    websocket: 0,
+    pages: {}
   };
+  if( globalStats.connections ) {
+    update.touch = Math.round( globalStats.touch / globalStats.connections );
+    update.video = Math.round( globalStats.video / globalStats.connections );
+    update.webgl = Math.round( globalStats.webgl / globalStats.connections );
+    update.websocket = Math.round( globalStats.websocket / globalStats.connections );
+    update.pages = globalStats.pages;
+  }
+
   console.log( update );
-  dashboard.emit( 'stats-updated', update );
+  emitter.emit( 'stats-updated', update );
 }
 
 server.listen( 3000, function(){
