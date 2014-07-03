@@ -1,0 +1,94 @@
+body {
+  font: 400 0.95em/1 "Proxima Nova", Helvetica,sans-serif;
+  font-size: .875em;
+  background-color: #f0f0f0;
+
+  padding-top: 90px;
+}
+
+.widget {
+  -webkit-box-shadow: #f0f0f0 0 0 8px;
+  -moz-box-shadow: #f0f0f0 0 0 8px;
+  box-shadow: #f0f0f0 0 0 8px;
+  background-color: #f0f0f0;
+
+  margin-bottom: 30px;
+}
+
+.widget h1 {
+  font-size: 1.0em;
+  margin: 0 0 .4em;
+  font-weight: bold;
+}
+
+.widget .widget-inner>header, .widget .widget-inner>footer {
+  font-size: 12px;
+  text-shadow: 1px 1px #0e0e0e;
+}
+
+.widget .widget-inner>header {
+  background-color: #272727;
+  text-transform: uppercase;
+  padding: 16px 12px 16px 26px;
+  font-weight: 700;
+}
+
+.widget .widget-inner {
+  border: solid 1px #e5e5e5;
+  background-color: #fff;
+}
+
+.widget .widget-inner>header {
+  background-color: #f5f5f5;
+}
+
+.widget .widget-inner>header h1 {
+  color: #8b8b8b;
+  text-shadow: 1px 1px #fff;
+  margin-bottom: 0;
+}
+
+.widget .widget-body {
+  color: #666;
+
+  height: 225px
+}
+
+.widget .widget-body {
+  padding: 16px;
+  color: #d3d4d4;
+  font-family: Helvetica, Arial, sans-serif;
+  z-index: 1;
+}
+
+.widget .widget-inner>footer {
+  color: #8b8b8b;
+  background-color: #f5f5f5;
+  text-shadow: 1px 1px #fff;
+}
+
+.dash-unit {
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border: 1px solid #e5e5e5;
+  /*background-image: url('../img/sep-half.png');*/
+  background-color: #f5f5f5;
+  color: #8b8b8b;
+  height: 290px;
+  text-align: center;
+}
+
+.dash-unit dtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  margin: 8px;
+  padding: 0px;
+  height: inherit;
+}
+
+.dash-unit hr {
+  border: 0;
+  border-top: 1px solid #151515;
+  border-top-style: dashed;
+  margin-top: 3px;
+}

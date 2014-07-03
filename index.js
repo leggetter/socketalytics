@@ -1,25 +1,50 @@
-var express = require('express');
-
+var express = require( 'express' );
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+app.use( express.static( __dirname + '/public') );
 
-app.use(express.static(__dirname + '/public'));
+var server = require( 'http' ).Server( app );
+var io = require( 'socket.io' )( server );
 
-io.on('connection', function(socket){
-  console.log( 'connection' );
-  socket.on( 'client-data', function( data ) {
-    console.log( data );
+var globalStats = {
+  connections: 0,
+  touch: 0,
+  video: 0,
+  webgl: 0,
+  websocket: 0
+};
+
+var captureSockets = {};
+
+var capture = io.of( '/capture' );
+capture.on( 'connection', function( socket ) {
+  captureSockets[ socket.id ] = { socket: socket, stats: {} };
+
+  ++globalStats.connections;
+
+  socket.on( 'disconnect', function() {
+    --globalStats.connections;
+
+    var data = captureSockets[ socket.id ].stats;
+    globalStats.touch     -= ( data.touch?     1 : 0 );
+    globalStats.video     -= ( data.video?     1 : 0 );
+    globalStats.webgl     -= ( data.webgl?     1 : 0 );
+    globalStats.websocket -= ( data.websocket? 1 : 0 );
+    delete captureSockets[ socket.id ];
+
+    console.log( globalStats );
   } );
-  socket.on('mousemove', function(msg){
-    // console.log( msg );
-    io.emit('mousemove', msg);
-  });
 
-  console.log( 'clients', io.sockets.server.engine.clientsCount );
-  // console.log( io.sockets.manager.server.connections );
-});
+  socket.on( 'client-data', function( data ) {
+    captureSockets[ socket.id ].stats = data;
+    globalStats.touch     += ( data.touch?     1 : 0 );
+    globalStats.video     += ( data.video?     1 : 0 );
+    globalStats.webgl     += ( data.webgl?     1 : 0 );
+    globalStats.websocket += ( data.websocket? 1 : 0 );
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
+    console.log( globalStats );
+  } );
+} );
+
+server.listen( 3000, function(){
+  console.log( 'listening on *:3000' );
+} );

@@ -4,42 +4,9 @@
     <title>SocketAlytics</title>
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bower_components/epoch/epoch.0.5.2.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
 
-    <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #1f1f1f;
-
-      padding-top: 60px;
-    }
-
-    .dash-unit {
-      margin-bottom: 30px;
-      padding-bottom: 10px;
-      border: 1px solid #383737;
-      background-image: url('../img/sep-half.png');
-      background-color: #3d3d3d;
-      color: white;
-      height: 290px;
-      text-align: center;
-    }
-
-    .dash-unit dtitle {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: #ffffff;
-      margin: 8px;
-      padding: 0px;
-      height: inherit;
-    }
-
-    .dash-unit hr {
-      border: 0;
-      border-top: 1px solid #151515;
-      border-top-style: dashed;
-      margin-top: 3px;
-    }
-    </style>
   </head>
   <body>
 
@@ -71,225 +38,121 @@
 
       <div class="row">
 
-        <div class="col-sm-3 col-lg-3">
-      		<div class="dash-unit">
-            <dtitle>WebGL Support</dtitle>
-            <hr />
+        <div class="col-sm-6 col-lg-6">
+          <article class="widget">
+            <div class="widget-inner">
 
-            <input type="text" class="knob" value="50" data-width="230" data-height="230" data-fgColor="#b2c831" readonly="readonly" data-skin="tron" />
-          </div>
+              <header>
+                <h1>Visitors (30D)</h1>
+              </header>
+
+              <section class="widget-body">
+                <div id="visitors" class="epoch" style="height: 200px;"></div>
+              </section>
+
+            </div><!-- .widget-inner -->
+
+          </article>
         </div>
 
         <div class="col-sm-3 col-lg-3">
-          <div class="dash-unit">
-            <dtitle>Touch Support</dtitle>
-            <hr />
+          <article class="widget">
+            <div class="widget-inner  widget-size-3x2 large-screen">
 
-            <input type="text" class="knob" value="50" data-width="230" data-height="230" data-fgColor="#fa1d2d" readonly="readonly" data-skin="tron" />
-          </div>
+              <header>
+                <h1>WebGL Support</h1>
+              </header>
+
+              <section class="widget-body">
+                <div id="webgl_support" class="epoch gauge-medium"></div>
+              </section>
+
+            </div><!-- .widget-inner -->
+
+          </article>
         </div>
 
         <div class="col-sm-3 col-lg-3">
-          <div class="dash-unit">
-            <dtitle>Video Support</dtitle>
-            <hr />
+          <article class="widget">
+            <div class="widget-inner  widget-size-3x2 large-screen">
 
-            <input type="text" class="knob" value="50" data-width="230" data-height="230" data-fgColor="#00a65a" readonly="readonly" data-skin="tron" />
-          </div>
-        </div>
+              <header>
+                <h1>Touch Support</h1>
+              </header>
 
-        <div class="col-sm-3 col-lg-3">
-          <div class="dash-unit">
-            <dtitle>WebSocket</dtitle>
-            <hr />
+              <section class="widget-body">
+                <div id="touch_support" class="epoch gauge-medium"></div>
+              </section>
 
-            <input type="text" class="knob" value="50" data-width="230" data-height="230" data-fgColor="#3aa2d0" readonly="readonly" data-skin="tron" />
-          </div>
+            </div><!-- .widget-inner -->
+
+          </article>
         </div>
 
       </div>
 
       <div class="row">
-          <div class="col-xs-12">
 
-            <div class="dash-unit chart">
-              <dtitle>Visitors</dtitle>
-              <hr />
+        <div class="col-sm-6 col-lg-6">
+          <article class="widget">
+            <div class="widget-inner">
 
-              <div id="interactive" style="height: 230px;"></div>
-            </div>
+              <header>
+                <h1>Popular Pages</h1>
+              </header>
 
-          </div><!-- /.col -->
-      </div><!-- /.row -->
+              <section class="widget-body">
+                <div id="pages" class="epoch" style="height: 200px;"></div>
+              </section>
+
+            </div><!-- .widget-inner -->
+
+          </article>
+        </div>
+
+
+        <div class="col-sm-3 col-lg-3">
+          <article class="widget">
+            <div class="widget-inner  widget-size-3x2 large-screen">
+
+              <header>
+                <h1>WebSocket Support</h1>
+              </header>
+
+              <section class="widget-body">
+                <div id="ws_support" class="epoch gauge-medium"></div>
+              </section>
+
+            </div><!-- .widget-inner -->
+
+          </article>
+        </div>
+
+        <div class="col-sm-3 col-lg-3">
+          <article class="widget">
+            <div class="widget-inner  widget-size-3x2 large-screen">
+
+              <header>
+                <h1>Video Support</h1>
+              </header>
+
+              <section class="widget-body">
+                <div id="video_support" class="epoch gauge-medium"></div>
+              </section>
+
+            </div><!-- .widget-inner -->
+
+          </article>
+        </div>
+
+      </div>
 
     </div>
 
-
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/jquery-flot/jquery.flot.js"></script>
-<script src="bower_components/jquery-knob/js/jquery.knob.js"></script>
-<script type="text/javascript">
-
-$(function() {
-
-    /*
-     * Flot Interactive Chart
-     * -----------------------
-     */
-    // We use an inline data source in the example, usually data would
-    // be fetched from a server
-    var data = [], totalPoints = 100;
-    function getRandomData() {
-
-        if (data.length > 0)
-            data = data.slice(1);
-
-        // Do a random walk
-        while (data.length < totalPoints) {
-
-            var prev = data.length > 0 ? data[data.length - 1] : 50,
-                    y = prev + Math.random() * 10 - 5;
-
-            if (y < 0) {
-                y = 0;
-            } else if (y > 100) {
-                y = 100;
-            }
-
-            data.push(y);
-        }
-
-        // Zip the generated y values with the x values
-        var res = [];
-        for (var i = 0; i < data.length; ++i) {
-            res.push([i, data[i]]);
-        }
-
-        return res;
-    }
-
-    var interactive_plot = $.plot("#interactive", [getRandomData()], {
-        grid: {
-            borderColor: "#666",
-            borderWidth: 1,
-            tickColor: "#666"
-        },
-        series: {
-            shadowSize: 0, // Drawing is faster without shadows
-            color: "#CDCDCD"
-        },
-        lines: {
-            fill: true, //Converts the line chart to area chart
-            color: "#CDCDCD"
-        },
-        yaxis: {
-            min: 0,
-            max: 100,
-            show: true,
-            font: {
-              color: '#ffffff'
-            }
-        },
-        xaxis: {
-            show: true,
-            font: {
-              color: '#ffffff'
-            }
-        }
-    });
-
-    var updateInterval = 500; //Fetch data ever x milliseconds
-    var realtime = "on"; //If == to on then fetch data every x seconds. else stop fetching
-    function update() {
-
-        interactive_plot.setData([getRandomData()]);
-
-        // Since the axes don't change, we don't need to call plot.setupGrid()
-        interactive_plot.draw();
-        if (realtime === "on")
-            setTimeout(update, updateInterval);
-    }
-
-    //INITIALIZE REALTIME DATA FETCHING
-    if (realtime === "on") {
-        update();
-    }
-    //REALTIME TOGGLE
-    $("#realtime .btn").click(function() {
-        if ($(this).data("toggle") === "on") {
-            realtime = "on";
-        }
-        else {
-            realtime = "off";
-        }
-        update();
-    });
-    /*
-     * END INTERACTIVE CHART
-     */
-
-});
-
-$(function() {
-  /* jQueryKnob */
-
-  $(".knob").knob({
-      /*change : function (value) {
-       //console.log("change : " + value);
-       },
-       release : function (value) {
-       console.log("release : " + value);
-       },
-       cancel : function () {
-       console.log("cancel : " + this.value);
-       },*/
-      draw: function() {
-
-          // "tron" case
-          if (this.$.data('skin') == 'tron') {
-
-              var a = this.angle(this.cv)  // Angle
-                      , sa = this.startAngle          // Previous start angle
-                      , sat = this.startAngle         // Start angle
-                      , ea                            // Previous end angle
-                      , eat = sat + a                 // End angle
-                      , r = true;
-
-              this.g.lineWidth = this.lineWidth;
-
-              this.o.cursor
-                      && (sat = eat - 0.3)
-                      && (eat = eat + 0.3);
-
-              if (this.o.displayPrevious) {
-                  ea = this.startAngle + this.angle(this.value);
-                  this.o.cursor
-                          && (sa = ea - 0.3)
-                          && (ea = ea + 0.3);
-                  this.g.beginPath();
-                  this.g.strokeStyle = this.previousColor;
-                  this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
-                  this.g.stroke();
-              }
-
-              this.g.beginPath();
-              this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
-              this.g.stroke();
-
-              this.g.lineWidth = 2;
-              this.g.beginPath();
-              this.g.strokeStyle = this.o.fgColor;
-              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
-              this.g.stroke();
-
-              return false;
-          }
-      }
-  });
-  /* END JQUERY KNOB */
-});
-
-</script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/d3/d3.min.js"></script>
+  <script src="bower_components/epoch/epoch.0.5.2.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

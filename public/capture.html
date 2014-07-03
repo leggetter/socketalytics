@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <body>
+    <h1>Capture</h1>
+    <script src="/bower_components/socket.io-client/socket.io.js"></script>
+    <script src="/bower_components/modernizer/modernizr.js"></script>
+    <script>
+      var socket = io( 'localhost:3000/capture' );
+      socket.on( 'connect', function() {
+        console.log( 'connected' );
+
+        var data = {
+          url: window.location.href,
+          webgl: Modernizr.webgl,
+          touch: Modernizr.touch,
+          video: Modernizr.video,
+          websocket: Modernizr.websockets
+        };
+
+        socket.emit( 'client-data', data );
+      } );
+    </script>
+  </body>
+</html>

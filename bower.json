@@ -1,7 +1,7 @@
 {
   "name": "socketalytics",
   "main": "index.js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/leggetter/socketalytics",
   "authors": [
     "leggetter <phil@leggetter.co.uk>"
@@ -22,8 +22,10 @@
   ],
   "dependencies": {
     "jquery": "~2.1.1",
-    "jquery-flot": "~0.8.3",
-    "jquery-knob": "~1.2.8",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "epoch": "~0.5.2",
+    "d3": "~3.4.9",
+    "socket.io-client": "~1.0.6",
+    "modernizer": "~2.8.2"
   }
 }
