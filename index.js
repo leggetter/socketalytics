@@ -14,8 +14,9 @@ var globalStats = {
 };
 
 var captureSockets = {};
-
 var capture = io.of( '/capture' );
+var dashboard = io.of( '/dashboard' );
+
 capture.on( 'connection', function( socket ) {
   captureSockets[ socket.id ] = { socket: socket, stats: {} };
 
@@ -32,6 +33,7 @@ capture.on( 'connection', function( socket ) {
     delete captureSockets[ socket.id ];
 
     console.log( globalStats );
+    sendUpdate();
   } );
 
   socket.on( 'client-data', function( data ) {
@@ -42,8 +44,24 @@ capture.on( 'connection', function( socket ) {
     globalStats.websocket += ( data.websocket? 1 : 0 );
 
     console.log( globalStats );
+    sendUpdate();
   } );
 } );
+
+function percent( stat ) {
+  return Math.round( stat / globalStats.connections ) * 100;
+}
+
+function sendUpdate() {
+  var update = {
+    touchPercent: percent( globalStats.touch ),
+    videoPercent: percent( globalStats.video ),
+    webglPercent: percent( globalStats.webgl ),
+    websocketPercent: percent( globalStats.websocket )
+  };
+  console.log( update );
+  dashboard.emit( 'stats-updated', update );
+}
 
 server.listen( 3000, function(){
   console.log( 'listening on *:3000' );
