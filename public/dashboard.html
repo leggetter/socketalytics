@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <link href="bower_components/epoch/epoch.0.5.2.min.css" rel="stylesheet" />
+    <style>
+      .epoch {
+        float: left;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="visitors" class="epoch" style="height: 200px; width: 98%"></div>
+    <div id="pages" class="epoch" style="height: 200px; width: 43%;"></div>
+    <div id="touch" class="epoch gauge-medium" style="height: 200px; width: 24%;"></div>
+    <div id="video" class="epoch gauge-medium" style="height: 200px; width: 24%;"></div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/d3/d3.min.js"></script>
+    <script src="bower_components/epoch/epoch.0.5.2.min.js"></script>
+    <script src="bower_components/socket.io-client/socket.io.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
