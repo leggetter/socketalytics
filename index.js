@@ -14,18 +14,16 @@ var stats = {
 };
 
 // Map of Socket.id to Socket object
-var captureSockets = {};
+var socketData = {};
 
 // Namespace use when capturing data
 var capture = io.of( '/capture' );
 
 capture.on( 'connection', function( socket ) {
-  captureSockets[ socket.id ] = { socket: socket, stats: {} };
-
   ++stats.connections;
 
   socket.on( 'client-data', function( data ) {
-    captureSockets[ socket.id ].stats = data;
+    socketData[ socket.id ] = data;
     stats.touch += ( data.touch? 1 : 0 );
     stats.video += ( data.video? 1 : 0 );
 
@@ -40,11 +38,10 @@ capture.on( 'connection', function( socket ) {
     // Clear down stats for lost socket
     --stats.connections;
 
-    var data = captureSockets[ socket.id ].stats;
-    stats.touch -= ( data.touch? 1 : 0 );
-    stats.video -= ( data.video? 1 : 0 );
-    --stats.pages[ data.url ];
-    delete captureSockets[ socket.id ];
+    stats.touch -= ( socketData[ socket.id ].touch? 1 : 0 );
+    stats.video -= ( socketData[ socket.id ].video? 1 : 0 );
+    --stats.pages[ socketData[ socket.id ].url ];
+    delete socketData[ socket.id ];
 
     console.log( stats );
     dashboard.emit( 'stats-updated', stats );

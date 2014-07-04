@@ -2,9 +2,8 @@ $( function() {
   localStorage.debug = 'socket.io-client:socket';
 
   var visitors = $('#visitors').epoch( {
-    type: 'time.area',
-    data: [ { values: [ { time: Date.now()/1000, y: 0 } ] } ],
-    axes: ['left', 'bottom', 'right']
+    type: 'time.area', axes: ['left', 'bottom', 'right'],
+    data: [ { values: [ { time: Date.now()/1000, y: 0 } ] } ]
   } );
   var pages = $( '#pages' ).epoch( { type: 'bar' } );
   var touch = $( '#touch' ).epoch( { type: 'time.gauge' } );
