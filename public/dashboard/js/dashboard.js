@@ -20,7 +20,6 @@ $( function() {
     for( var url in update.pages ) {
       pagesData.push( { x: url, y: update.pages[ url ] } );
     }
-    console.log( pagesData );
     pages.update( [ { values: pagesData } ] );
 
     visitors.push( [ { time: Date.now()/1000, y: update.connections } ] );
