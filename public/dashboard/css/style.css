@@ -92,3 +92,7 @@ body {
   border-top-style: dashed;
   margin-top: 3px;
 }
+
+.guage {
+  min-width: 300px;
+}
