@@ -1,0 +1,14 @@
+{
+  "name": "epoch",
+  "homepage": "https://github.com/fastly/epoch",
+  "version": "0.5.2",
+  "_release": "0.5.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.5.2",
+    "commit": "b7b3f568752c5f3ad468b08d4f548b756603def3"
+  },
+  "_source": "git://github.com/fastly/epoch.git",
+  "_target": "~0.5.2",
+  "_originalSource": "epoch"
+}
